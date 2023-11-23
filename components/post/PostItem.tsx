@@ -1,20 +1,41 @@
 "use client"
 
-import { Post, User} from "@prisma/client"
+import { Post, User , Like} from "@prisma/client"
 import {formatDistance} from "date-fns"
 import { ja } from "date-fns/locale"
 import Image from "next/image"
 import Link from "next/link"
+import PostLikeDetail from "./PostLikeDetail"
 
 interface PostItemProps {
     post: Post & {
-        user: Pick<User, "id" | "name" | "image">
+        user: Pick<User, "id" | "name" | "image">} &
+        {hasPostLiked: boolean
+         postLikeId: string | null
+        } & {like: Like[]}
+        userId? : string
 
     }
-}
-
+    // interface PostDetails {
+    //     hasPostLiked: boolean;
+    //     postLikeId: string | null;
+    //   }
+      
+    //   export const getPostDetails = (post: PostItemProps['post'] | null): PostDetails => {
+    //     if (post === null) {
+    //       return {
+    //         hasPostLiked: false,
+    //         postLikeId: null,
+    //       };
+    //     }
+      
+    //     return {
+    //       hasPostLiked: post.hasPostLiked,
+    //       postLikeId: post.postLikeId,
+    //     };
+    //   };
 //投稿一覧のアイテム
-const PostItem = ({post}: PostItemProps) =>{
+const PostItem = ({post, userId,}: PostItemProps) =>{
     //投稿内容を60文字に制限
     const content = 
     post.content.length > 60 ? post.content.slice(0, 60) + "..." : post.content
@@ -23,13 +44,13 @@ const PostItem = ({post}: PostItemProps) =>{
     const updatedAt = new Date(post.updatedAt ?? 0)
     const now = new Date()
     const date = formatDistance(updatedAt, now, { addSuffix: true, locale: ja})
-    console.log(date)
-
+    // console.log(date)
 
 return(
     <div>
         <div className=" grid grid-cols-1 sm:grid-cols-3 sm:gap-3 space-y-3 sm:space-y-0">
             <Link href={`/post/${post.id}`} className="relative">
+                
                 <div className=" aspect-[16/9] relative col-span-3 sm:col-span-1 overflow-hidden rounded-md">
                     <Image
                        fill
@@ -38,6 +59,7 @@ return(
                        className="object-cover rounded-md transition-all hover:scale-105"
                        />
                 </div>
+                
             </Link>
 
             <div className=" col-span-1 sm:col-span-2 space-y-3 break-words">
@@ -66,6 +88,9 @@ return(
                         </div>
                     </Link>
                 </div>
+                <PostLikeDetail  post={post} userId={userId}/>
+
+
             </div>
         </div>
 
