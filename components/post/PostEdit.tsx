@@ -72,7 +72,7 @@ const PostEdit = ({ post }: PostEditProps) => {
 
     //送信
     const onSubmit: SubmitHandler<InputType> = async (data) => {
-        console.log(data,"data")
+        // console.log(data,"data")
         let base64Image
 
         if(
@@ -93,7 +93,7 @@ const PostEdit = ({ post }: PostEditProps) => {
 
     //画像アップロード
     const onChangeImage = (imageList: ImageListType) => {
-        console.log(imageList,"imageList")
+        // console.log(imageList,"imageList")
         const file = imageList[0]?.file
         const maxFileSize = 5 * 1024 * 1024
 

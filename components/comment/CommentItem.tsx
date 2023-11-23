@@ -67,6 +67,7 @@ const CommentItem = ({ comment, userId }: CommentItemProps) => {
 
         <div className=" flex items-center justify-end space-x-1 pr-1 pb-1">
             <CommentLikeDetail comment={comment} userId={userId} />
+            
 
             {userId === comment.user.id && (
                 <>

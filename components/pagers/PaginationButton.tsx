@@ -26,14 +26,14 @@ const PaginationButton = ({ pageCount, displayPerPage }: PaginationButtonProps) 
 
     //URLからページ番号や表示件数を取得
     const page = searchParams?.get("page") ?? "1"
-    console.log(searchParams?.get("page"),"searchparams")
-    console.log(page,"page")
+    // console.log(searchParams?.get("page"),"searchparams")
+    // console.log(page,"page")
     
 
 
     //1ページに表示する件数
     const perPage = searchParams?.get("perPage") ?? displayPerPage.toString()
-    console.log(displayPerPage,"displayperpage")
+    // console.log(displayPerPage,"displayperpage")
 
     //現在のページ前後に表示するページ数
     const siblingCount = 1
@@ -55,10 +55,10 @@ const PaginationButton = ({ pageCount, displayPerPage }: PaginationButtonProps) 
             }
     
             // newSearchParams を確認する
-            console.log(newSearchParams.toString(), "newSearchParams");
+            // console.log(newSearchParams.toString(), "newSearchParams");
             //3ページ目の場合page=3&perPage=3
            
-            console.log(params,"params")
+            // console.log(params,"params")
            //2ページ目の場合 {page: 2, perPage: '3'} 
     
             return newSearchParams.toString();

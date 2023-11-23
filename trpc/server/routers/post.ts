@@ -60,13 +60,14 @@ export const postRouter = router({
     getPosts: publicProcedure
     .input(
         z.object({
+            userId: z.string().optional(),
             limit: z.number(),
             offset: z.number(),
         })
     )
     .query(async ({ input }) => {
         try{
-            const { offset, limit } = input
+            const { offset, limit, userId } = input
             //投稿一覧取得
             const posts = await prisma.post.findMany({
                 //skip指定した数だけレコードを飛ばす
@@ -84,14 +85,34 @@ export const postRouter = router({
                             image: true,
                         },
                     },
+                    like: true,
                 },
             })
+            
+
+            const postsWithLikesStatus = posts.map((post) => {
+                const userLike = userId
+                ? post.like.find((like) => like.userId === userId)
+                : null
+
+                return{
+                    ...post,
+                    hasPostLiked: !!userLike,
+                    postLikeId: userLike ? userLike.id : null,
+                }
+            })
+
             //投稿の総数を取得
             const totalPosts = await prisma.post.count()
-            console.log(totalPosts,"totalPosts")
+            
+            // console.log(totalPosts,"totalPosts")
+            // console.log(posts,"posts")
+            // console.log(postsWithLikesStatus,"postswithlike")
+            
+        
 
-
-            return {posts, totalPosts}
+            return {posts: postsWithLikesStatus, totalPosts}
+            
 
         } catch(error){
             console.log(error)
@@ -124,9 +145,10 @@ getPostById: publicProcedure
                                     name: true,
                                     image: true,
                                 },
-                            },
+                            },like: true
                         },
                     })
+                    
                     return post
 
                 }catch(error){
@@ -286,7 +308,61 @@ getPostById: publicProcedure
                 }
             }
 
-          })
+          }),
+          
+          createPostLike: privateProcedure
+            .input(
+                z.object({
+                    postId: z.string(),
+                })
+            )
+            .mutation(async ({ input, ctx}) => {
+                try{
+                    const { postId } = input
+                    const userId = ctx.user.id
+
+                    await prisma.like.create({
+                        data: {
+                            userId,
+                            postId,
+                            
+                        }
+                        
+                    })
+
+                }catch(error){
+                    console.log(error)
+                    throw new TRPCError({
+                        code: "INTERNAL_SERVER_ERROR",
+                        message: "エラーが発生しました"
+                    })
+                }
+            }),
+
+            deletePostLike: privateProcedure
+            .input(
+                z.object({
+                    postLikeId: z.string(),
+                })
+            )
+            .mutation(async ({input}) => {
+                try{
+                    const { postLikeId } = input
+                    await prisma.like.delete({
+                        where: {
+                            id: postLikeId,
+                        },
+                    })
+                }catch(error){
+                    console.log(error)
+                    throw new TRPCError({
+                        code: "INTERNAL_SERVER_ERROR",
+                        message: "エラーが発生しました"
+                    })
+                }
+            })
+
+          
 
 })
 

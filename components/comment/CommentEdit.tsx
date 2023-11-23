@@ -19,6 +19,7 @@ import { trpc } from "@/trpc/react"
 import { Loader2 } from "lucide-react"
 import toast from "react-hot-toast"
 
+
 // 入力データの検証ルールを定義
 const schema = z.object({
   content: z.string().min(3, { message: "3文字以上入力する必要があります。" }),

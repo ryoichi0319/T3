@@ -2,7 +2,6 @@ import { publicProcedure, privateProcedure, router } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import prisma from "@/lib/prisma"
-import { id } from "date-fns/locale";
 
 export const commentRouter = router({
     //コメント投稿
@@ -25,7 +24,7 @@ export const commentRouter = router({
                     content,
                 },
             })
-
+  
             return comment
 
         }catch(error){
@@ -86,9 +85,11 @@ export const commentRouter = router({
                 where: { postId },
             })
 
-
+        //    console.log(commentsWithLikesStatus,"commentswith")
+        //    console.log(comments,"comments")
 
             return { comments: commentsWithLikesStatus , totalComments }
+            
             
 
 

@@ -26,14 +26,18 @@ const PostDetailPage = async ({
   // 認証情報取得
   const user = await getAuthSession()
 
+
   // 投稿詳細取得
   const post = await trpc.post.getPostById({ postId })
+
+  
 
   if (!post) {
     return (
       <div className="text-center text-sm text-gray-500">投稿はありません</div>
     )
   }
+
 
   // コメント一覧取得
   const { comments, totalComments } = await trpc.comment.getComments({
@@ -43,16 +47,23 @@ const PostDetailPage = async ({
     offset,
   })
 
+
   const pageCount = Math.ceil(totalComments / limit)
 
   return (
-    <PostDetail
+
+    <>    <PostDetail
       post={post}
+      
       userId={user?.id}
       comments={comments}
       pageCount={pageCount}
       totalComments={totalComments}
     />
+
+    </>
+
+    
   )
 }
 
