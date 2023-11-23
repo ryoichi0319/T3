@@ -9,7 +9,6 @@ import Image from "next/image"
 import Link from "next/link"
 import toast from "react-hot-toast"
 import CommentDetail from "@/components/comment/CommentDetail"
-import PostLikeDetail from "./PostLikeDetail"
 
 interface PostDetailProps {
     post: Post & { user: Pick<User, "id" | "name" | "image"> }& {like: Like[]}
@@ -123,7 +122,6 @@ return (
               </div>
 
           )} 
-          <PostLikeDetail post={post} userId={userId}/>
           <CommentDetail
               userId={userId}
               postId={post.id}
