@@ -9,28 +9,27 @@ import Image from "next/image"
 import Link from "next/link"
 import toast from "react-hot-toast"
 import CommentDetail from "@/components/comment/CommentDetail"
+import PostLikeDetail2 from "./PostLikeDetail2"
 
 interface PostDetailProps {
-    post: Post & { user: Pick<User, "id" | "name" | "image"> }& {like: Like[]}
-   
-    userId?: string
-    comments: (Comment & { user: Pick<User, "id" | "name" | "image"> } & {
-      hasLiked: boolean
-      commentLikeId: string | null
-    } & { likes: CommentLike[] })[]
-    pageCount: number
-    totalComments: number 
-    
-    
-      
-    
-
-      
-  }
+  post: Post & { user: Pick<User, "id" | "name" | "image"> } & { like: Like[] };
+  po: {
+    hasPostLiked: boolean;
+    postLikeId: string | null;
+  };
+  userId?: string;
+  comments: (Comment & { user: Pick<User, "id" | "name" | "image"> } & {
+    hasLiked: boolean;
+    commentLikeId: string | null;
+  } & { likes: CommentLike[] })[];
+  pageCount: number;
+  totalComments: number;
+}
   
 // 投稿詳細
 const PostDetail = ({
   post,
+  po,
   userId,
   comments,
   pageCount,
@@ -100,6 +99,9 @@ return (
 
           <div className=" leading-relaxed break-words whitespace-pre-wrap">
               {post.content}
+          </div>
+          <div className="flex justify-end mr-5">
+          <PostLikeDetail2  post={post} po={po} userId={userId}/>
           </div>
           {/* 認証ユーザーと投稿者が一致している場合表示*/}
           {userId === post.user.id && (

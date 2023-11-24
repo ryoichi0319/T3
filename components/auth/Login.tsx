@@ -20,7 +20,6 @@ import { Loader2 } from "lucide-react"
 import { signIn } from "next-auth/react"
 import toast from "react-hot-toast"
 import Link from "next/link"
-import { sign } from "crypto"
 
 //入力データの検証ルールを定義
 const schema = z.object({
@@ -76,6 +75,8 @@ const Login = () => {
                 return
             }
             toast.success("ログインしました。")
+            router.refresh()
+            router.push("/")
         }catch(error){
             toast.error("ログインに失敗しました。")
         }finally{
