@@ -163,6 +163,49 @@ getPostById: publicProcedure
 
             }),
 
+    getPostByLiked: publicProcedure
+    .input(
+        z.object({
+            postId: z.string(),
+            userId: z.string().optional(),
+        })
+    )
+    .query(async ({ input }) =>{
+        try{
+            const  { postId, userId } = input
+
+            //投稿詳細取得
+            const post = await prisma.post.findUnique({
+                where: {id: postId},
+                include: {
+                    user: {
+                        select:{
+                            id: true,
+                            name: true,
+                            image: true,
+                        },
+                    },like: true
+                },
+            })
+            const userLike = userId
+            ? post?.like.find((li) => li.userId === userId) : null
+            return {
+
+                hasPostLiked: !!userLike,
+                postLikeId: userLike ? userLike.id : null
+            }
+
+        }catch(error){
+            console.log(error)
+            throw new TRPCError({
+                code: "INTERNAL_SERVER_ERROR",
+                message: "投稿詳細取得に失敗しました"
+            })
+
+        }
+
+
+    }),
             //投稿編集
         updatePost: privateProcedure
          .input(

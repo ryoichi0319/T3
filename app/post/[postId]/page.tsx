@@ -26,9 +26,11 @@ const PostDetailPage = async ({
   // 認証情報取得
   const user = await getAuthSession()
 
-
+const userId = user?.id
   // 投稿詳細取得
   const post = await trpc.post.getPostById({ postId })
+
+  const po = await trpc.post.getPostByLiked({postId, userId})
 
   
 
@@ -54,7 +56,7 @@ const PostDetailPage = async ({
 
     <>    <PostDetail
       post={post}
-      
+      po={po}
       userId={user?.id}
       comments={comments}
       pageCount={pageCount}
