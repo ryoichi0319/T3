@@ -48,7 +48,7 @@ const user = await getAuthSession()
       ))}
       </div>
     {posts.length !== 0 && (
-      <PaginationButton pageCount={pageCount} displayPerPage={postPerPage} />
+      <PaginationButton pageCount={pageCount}  displayPerPage={postPerPage} />
     )}
     </div>
   )

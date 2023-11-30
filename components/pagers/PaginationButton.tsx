@@ -9,7 +9,6 @@ import {
     DoubleArrowRightIcon
 } from "@radix-ui/react-icons"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { createCloudImage } from '../../actions/cloudImage';
 
 interface PaginationButtonProps {
     pageCount: number
@@ -44,7 +43,6 @@ const PaginationButton = ({ pageCount, displayPerPage }: PaginationButtonProps) 
             const newSearchParams = new URLSearchParams(searchParams?.toString())
                         //3ページ目の場合page=3&perPage=3
 
-
             //パラメータを新しいクエリストリングに設定
             for (const [key, value] of Object.entries(params)) {
                 if (value === null) {
@@ -53,7 +51,6 @@ const PaginationButton = ({ pageCount, displayPerPage }: PaginationButtonProps) 
                     newSearchParams.set(key, String(value))
                 }
             }
-    
             // newSearchParams を確認する
             // console.log(newSearchParams.toString(), "newSearchParams");
             //3ページ目の場合page=3&perPage=3
@@ -95,11 +92,11 @@ const PaginationButton = ({ pageCount, displayPerPage }: PaginationButtonProps) 
     },[pageCount, page , siblingCount])
    
     return(
-        <div className=" flex flex-wrap items-center justify-center gap-2 pb-10">
+        <div className=" flex flex-wrap  items-center justify-center gap-2 pb-10">
             <Button
               variant="outline"
               size="icon"
-              className=" h-8 w-8"
+              className=" h-8 w-8 "
               onClick={() => {
                 startTransition(() => {
                     router.push(
