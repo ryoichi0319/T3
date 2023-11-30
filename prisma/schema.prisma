@@ -1,3 +1,5 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
@@ -7,6 +9,7 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 
 
 model Account {
@@ -110,7 +113,6 @@ model Like {
   user User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   post Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
 
-// @@unique([userId, postId])
   
 }
 model CommentLike {
